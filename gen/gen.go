@@ -17,6 +17,8 @@ import (
 
 	"github.com/go-openapi/spec"
 	"github.com/swaggo/swag"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"sigs.k8s.io/yaml"
 )
 
@@ -44,7 +46,7 @@ type Debugger interface {
 // New creates a new Gen.
 func New() *Gen {
 	gen := Gen{
-		json: json.Marshal,
+		json: marshalJson,
 		jsonIndent: func(data interface{}) ([]byte, error) {
 			return json.MarshalIndent(data, "", "    ")
 		},
@@ -60,6 +62,15 @@ func New() *Gen {
 	}
 
 	return &gen
+}
+
+func marshalJson(data interface{}) ([]byte, error) {
+	switch v := data.(type) {
+	case protoreflect.ProtoMessage:
+		return protojson.Marshal(v)
+	default:
+		return json.Marshal(v)
+	}
 }
 
 // Config presents Gen configurations.

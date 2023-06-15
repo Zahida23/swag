@@ -8,6 +8,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/tools v0.7.0
+	google.golang.org/protobuf v1.30.0
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -32,6 +33,6 @@ require (
 )
 
 retract (
-	v1.9.0 // published accidentally
 	v1.16.0 // published accidentally
+	v1.9.0 // published accidentally
 )
